@@ -1,0 +1,160 @@
+The gophercgi.py Library (v 0.2)
+================================
+
+Intro
+=====
+    The purpose of this library is to provide a simple interface for 
+programming moles in python. It provides functions to print text, 
+errors, and links, as well as some conversion functions.
+
+    The only external libraries that gophercgi.py uses are 'textwrap' and 
+'re'. Both of these can be found in the default standard python library, 
+so no work is required of the user to meet any dependencies.
+
+================
+Output Functions
+================
+    These are the functions that will take arguments, such as strings 
+and integers, and format them as gopher selectors and print them.
+
+
+gophercgi.print_text(text, line_length=67)
+	text = The string to be printed to the screen
+	line_length = The length of the lines to be printed
+  The print_text function takes a string, the text argument, and 
+formats it with a 'i' itemtype. It will automatically wrap the string 
+across several lines, if need be. Due to limitations in the textwrap library,
+this function cannot handle strings with newlines. They will be rendered 
+as spaces. If you want a different line wrapping length, you can change 
+the line_length argument. The default length is 67 characters.
+
+
+gophercgi.print_error(text, line_length=67)
+	text = The string to be printed to the screen
+	line_length = The length of the lines to be printed
+  This function behaves exactly identically to print_text, except that 
+it formats the string with a '3' itemtype. Again, if you want to change 
+the line wrapping length, you can ghange the line_length argument. The 
+default length is 67 characters.
+
+
+gophercgi.print_line(link_type, link_text, dir_path, host, port=70)
+	link_type = The itemtype of the link
+	link_text = The text of the link
+	dir_path = The path to where the link leads
+	host = The host where the link leads
+	port = The port number of the link (default: 70)
+  This function will print a gopher link using the arguments 
+given. It doesn't matter whether the link_type and port arguments are 
+strings or integers. This function can be used to print any type of 
+link, as the result looks like this:
+	(link_type)(link_text)<TAB>(dir_path)<TAB>(host)<TAB>(port)
+    Since the arguments can be whaterev you want, you can create special 
+links, link telnet links (itemtype 8) or hURL: links, but there are 
+special functions for those.
+
+
+gophercgi.print_telnet(link_text, host, port=23)
+	link_text = The text of the telnet link
+	host = The hostname of the remote host
+	port = The remote port (default: 23)
+  This function prints a telnet link using the '8' itemtype. It takes 
+the form of:
+	8(link_text)<TAB><TAB>(host)<TAB>(port)
+
+
+gophercgi.print_special(link_text, special_url)
+	link_text = The text of the special link
+	special_url = The URL
+  This function will create a link to any protocol, just as long as 
+the special_url argument is provided. You can create links to http://, 
+https://, ftp://, ssh://, and more. Make sure you provide the whole url, 
+eg., http://octotep.sdf.org/, not octotep.sdf.org. The output's format 
+is:
+	h(link_text)<TAB>URL:(special_url)<TAB>special.link<TAB>70
+  where 'special.link' and '70' are placeholders with no actual 
+function.
+  NOTE: While this function cerates a link to any protocol, it
+only works if the client knows how to handle the protocol.
+
+gophercgi.print_line()
+    This function's sole purpose is to print a blank line in a gopher 
+menu; it's format is:
+	i<TAB><TAB>error.host<TAB>0
+  where error.host and '0' are placeholders.
+
+
+====================
+Conversion Functions
+====================
+    These functions aren't really meant for programming moles, but do
+serve a practical purpose. The two functions convert text formatted as
+a gophermap to full-blown gopher selectors and full-blown gopher
+selectors to plain text. 
+
+gophermapcgi.gs_to_text(gm_text, show_prefixes=True, show_links=True)
+	gm_text = The gopher selectors to be converted
+	show_prefixes = Indicates whether to show what type of link was 
+	                printed (default: True)
+	show_links = Indicates whether to display a list of URLs at the 
+	             end of output (default: True)
+  This function acts similarly to lynx's -dump function in that it 
+takes a gophermap and displays it as text. If the show_prefixes argument 
+is True, the function will print a label before every link to explain 
+what it is. If the show_links argument is True, the function will print 
+a number after every link and include a list at the end with the 
+corresponding url's of those links.
+
+
+gophermapcgi.gm_to_gs(menu_text)
+	menu_text = The text to be gopherized
+  This function takes a string and converts it into a gophermap. It 
+looks for selector links and prints those as normal selectors, while
+everything else gets formatted as text selectors. The only way that 
+the function can determine whether something is a link or text is if
+_all_ the fields are filled out in a link. If something is missing,
+the function will probably mistake the link for text, so be careful.
+
+
+=======================
+Miscellaneous Functions
+=======================
+    This section has several conversion functions, which simplifiy
+the process of getting arguments for the mole and converts tab
+characters to spaces, so the returned string is safe to use 
+in moles.
+
+gophercgi.get_arg_list(args_str, separator, prefix)
+	args_str = A string contaning the arguments.
+	seperator = The character that separates each argument.
+	prefix = A part at the beginning of the string which contains
+	         no arguments and will be removed from the results.
+  This function takes a string of arguments and will return a list of 
+them, breaking them up every separator character. The prefix is a part
+of the string which is to be removed, for example, some servers create
+a enviroment variable with all the arguments, but they put the name of
+the script first, like 'test.cgi?la:lo:lu'. Here, the prefix would be
+'test.cgi?' because if that wasn't taken out, the first argument would
+be 'test.cgi?la', instead of 'la', the intended argument.
+
+gophercgi.get_arg_dict(args_str, separator, prefix, dict_separator="=")
+	args_str = A string containing the arguments. 
+	seperator = The character which separates the pairs
+	            from each other.
+	prefix = A part at the beginning of the string which contains
+	         no arguments and will be removed from the results.
+	dict_separator = The character which separates each key from its 
+	                 respective value
+  This function takes a string of arguments and will return a dictionary
+of them, breaking each pair up every separator character. The prefix is
+a part of the string which is to be removed. The dict_separator argument
+is a character which separates each key from its respective value. In the
+example 'test.cgi?k1=v1&k2=v2', 'test.cgi?' would be the prefix. The
+separator would be '&' and the dict_separator would be '='.
+
+gophercgi.tabs_to_spaces(text, tab_size=8)
+	tab_size = Indicates the size of the tab stops
+  This function takes a string and converts all tabs to spaces, thus
+making the string safe to use in all output functions. It returns the
+converted string. The tab_size controls the size of the tab stop.
+

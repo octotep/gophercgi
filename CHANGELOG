@@ -1,0 +1,21 @@
+CHANGELOG
+---------
+
+v0.2
+*Added output functions:
+    -print_para()
+*Fixed string formatting (%s implies str(); no sense in doing it twice)
+*Changed 'blank_line()' to 'print_line()'
+*Added conversion function:
+    -tabs_to_spaces()
+*Split 'load_args()' into two different functions:
+    -get_arg_list()
+    -get_arg_dict()
+*Changed 'gm_to_text()' to 'gs_to_text()'
+    -gm="gophermap" and gs="gopher selector". gs is more accurate.
+*Changed 'text_to_gm()' to 'gm_to_gs()'
+    -The text is a gophermap.
+*Made better documentation
+
+v0.1
+-First release

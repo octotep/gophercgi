@@ -1,0 +1,17 @@
+iHere is some inline text. Enjoy!		error.host	0
+i	error.host	0
+0Text files are the best!	/users/octotep/downloads/gophercgi/documentation.txt	sdf.org	70
+1A Link hust for you	/users/octotep	sdf.org	70
+2CSO server	/	ns.uic.edu	105
+3ERROR ERROR ERROR		error.host	0
+4Test binary	/users/octotep	sdf.org	70
+5Another test binary	/users/octotep	sdf.org	70
+6Yet another test binary	/users/octotep	sdf.org	70
+7Search with Veronica	/v2/vs	gopher.floodgap.com	70
+8Telnet Line		sdf.org	23
+9Another binary test	/users/octotep	sdf.org	70
+iOther itemtypes include d, c, g, I, s, p, x
+i		error.host	0
+ih itemtype test		error.host	0
+hFake html file in gopher	/users/octotep/fake.html	sdf.org	70
+hhttp hURL:	URL:http://octotep.sdf.org	sdf.org	70
